@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="public/css/index.css" rel="stylesheet">
+    <title>Acger Pair</title>
+</head>
+<body>
+<div class="container" id="userProfile">
+    <div class="row">
+        <div class="col-12 p-0">
+            <a href="/">
+                <img class="img-fluid rounded mx-auto d-block" src="public/img/header.jpg">
+            </a>
+        </div>
+    </div>
+    <div class="row mt-4 justify-content-center">
+        <div class="col-lg-6 col-12 text-center position-relative">
+            <input type="file" id="avatarFile" class="d-none">
+            <img id="userAvatar" :src="avatarUrl" class="mb-2 border-1 rounded rounded-circle s60">
+            <p>{{account}}</p>
+            <button class="text-muted small btn btn-sm btn-outline-light bg-light rounded position-absolute logout-btn"
+                    id="logoutBtn">
+                退出
+            </button>
+        </div>
+    </div>
+
+    <div class="row p-2 justify-content-center">
+        <div class="col-lg-6 col-12">
+            <div class="mb-3 row">
+                <div class="col-12 input-group mb-3">
+                    <span class="input-group-text" id="userName">昵称</span>
+                    <input type="text" class="form-control" v-model="name" aria-label="UserName"
+                           aria-describedby="userName">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-12 input-group mb-3">
+                    <span class="input-group-text" id="userPassword">密码</span>
+                    <input type="password" class="form-control" v-model="password" aria-label="UserPassword"
+                           aria-describedby="userPassword">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-12">
+                    <button id="editProfileBtn" class="m-auto d-block btn btn-outline-primary">保 存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="public/js/bootstrap.bundle.min.js"></script>
+<script src="public/js/jquery-3.6.0.min.js"></script>
+<script src="public/js/vue.global.prod.js"></script>
+<script src="public/js/qiniu.min.js"></script>
+<script type="module" src="public/js/profile.js"></script>
+</body>
+</html>

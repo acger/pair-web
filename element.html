@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="public/css/index.css" rel="stylesheet">
+    <title>Acger Pair</title>
+</head>
+<body>
+<div class="container flex-1">
+    <div class="row">
+        <div class="col-12 p-0">
+            <a href="/">
+                <img class="img-fluid rounded mx-auto d-block" src="public/img/header.jpg">
+            </a>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="mt-3 col-lg-5 col-sm-10">
+            <p class="text-indent text-muted bg-light p-2 rounded border border-light"><b class="text-danger">* </b>请写下那些印象深刻的作品，例如某部动画、游戏、电影、书籍、UP主等等，Acger
+                Pair将为你匹配出有相同味道的小伙伴。</p>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-sm-12" id="elementForm">
+            <div id="eleControls" class="carousel carousel-dark slide" data-bs-interval="false"
+                 data-bs-ride="carousel">
+                <div class="carousel-inner m-auto text-center">
+                    <div class="carousel-item active">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <p class="pt-2">曾经的 · Past</p>
+                                <p class="text-muted small">记忆化作了血肉，成为了你</p>
+                            </li>
+                            <element-input-li :list="pastList"></element-input-li>
+                            <li class="list-group-item">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="carousel-item">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <p class="pt-2">现在的 · Present</p>
+                                <p class="text-muted small">每一个当下，都值得纪念</p>
+                            </li>
+                            <element-input-li :list="presentList"></element-input-li>
+                            <li class="list-group-item">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="carousel-item">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <p class="pt-2">未来的 · Future</p>
+                                <p class="text-muted small">不妨写下那些心心念念的</p>
+                                <p class="text-muted small fw-lighter">或许能认识，来自未来的你</p>
+                            </li>
+                            <element-input-li :list="futureList"></element-input-li>
+                            <li class="list-group-item">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <button class="carousel-control-next pair-btn-reset" type="button"
+                        data-bs-target="#eleControls"
+                        data-bs-slide="next">
+                    <span class="icon-right" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-6 col-sm-12 text-center">
+            <button id="pairBtn" type="button" class="btn btn-outline-primary w-25 mt-3" data-bs-toggle="modal"
+                    data-bs-target="#pairModal">Pair
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="pairModal" tabindex="-1" aria-labelledby="pairModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-lg-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="pairModalLabel">匹配到的小伙伴</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body paper-bg">
+                    <div id="friendsList">
+                        <friends-li :list="userElement"></friends-li>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="elementModal" tabindex="-1" aria-labelledby="elementModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-lg-down">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="elementModalLabel">Detail</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body paper-bg" id="userElementDetail">
+                                    <user-element-detail :detail="userElement"></user-element-detail>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen">
+            <div class="modal-content" id="chatList">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="chatModalLabel"> Are you OK ?</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body paper-bg" id="chatMessageList">
+                    <div class="row">
+                        <div class="col-12">
+                            <template v-if="status">
+                                <chat-li :list="list" :from="fromUser" :to="toUser"></chat-li>
+                            </template>
+                            <div class="row s3r"></div>
+                        </div>
+                    </div>
+                    <div class="row fixed-bottom">
+                        <div class="col-12">
+                            <div class="input-group p-2 bg-light">
+                                <input id="chatMessage" type="text" class="form-control">
+                                <button id="chatSendBtn" class="btn btn-outline-secondary chat-send-btn" type="button">
+                                    <p class="s1r"></p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="public/js/bootstrap.bundle.min.js"></script>
+<script src="public/js/jquery-3.6.0.min.js"></script>
+<script src="public/js/vue.global.prod.js"></script>
+<script type="module" src="public/js/element.js"></script>
+<script type="module" src="public/js/chat.js"></script>
+</body>
+</html>

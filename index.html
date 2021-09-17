@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="public/css/index.css" rel="stylesheet">
+    <title>Acger Pair</title>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 p-0">
+            <img class="img-fluid rounded mx-auto d-block" src="public/img/main.gif">
+        </div>
+        <div class="col-12 py-3">
+            <figure class="text-center">
+                <blockquote class="blockquote">
+                    <p class="display-3 main-title" style="">Acger Pair</p>
+                </blockquote>
+                <p class="text-muted fs-6">—— 发现你的宝藏小伙伴 ——</p>
+            </figure>
+        </div>
+        <div id="userInfoBlock" class="col-12 col-lg-6 mb-3 text-center d-none position-relative">
+            <a href="/profile.html">
+                <img id="userAvatarImg" src="public/img/avatar.jpg" class="border-1 rounded rounded-circle s60">
+            </a>
+            <span id="friendsBtn" class="d-none">
+                <a href="/friends.html">
+                    <button class="msg-btn text-muted small btn btn-sm btn-outline-light bg-light rounded position-absolute logout-btn">
+                        友人帐
+                    </button>
+                </a>
+            </span>
+        </div>
+        <div class="col-12 text-center py-2">
+            <button id="startBtn" type="button" class="btn btn-lg btn-outline-dark" data-bs-toggle="modal"
+                    data-bs-target="#startModal">点击开始
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="startModal" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="loginRegisterLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="loginRegisterLabel">请先登录或注册</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body paper-bg">
+                    <div class="row p-2">
+                        <div class="col-12 text-center">
+                            <div class="row mb-3">
+                                <label for="loginAccount" class="col-3 col-form-label">账号：</label>
+                                <div class="col">
+                                    <input type="text" class="form-control" id="loginAccount">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="loginPassword" class="col-3 col-form-label">密码：</label>
+                                <div class="col">
+                                    <input type="password" class="form-control" id="loginPassword">
+                                </div>
+                            </div>
+                            <div class="row py-3">
+                                <div class="col-3"></div>
+                                <div class="col-4">
+                                    <button type="button" id="loginBtn" class="btn btn-outline-dark w-100">登录</button>
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" id="registerBtn" class="btn btn-dark w-100">注册</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row fixed-bottom">
+        <div class="col-12 text-center">
+            <p class="text-black-50 text-opacity-25 fw-lighter"><small>&copy; 2021 Power by grail.</small></p>
+        </div>
+    </div>
+</div>
+<script src="public/js/bootstrap.bundle.min.js"></script>
+<script src="public/js/jquery-3.6.0.min.js"></script>
+<script type="module" src="public/js/login.js"></script>
+</body>
+</html>

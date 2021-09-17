@@ -1,0 +1,123 @@
+html {
+    height: 100%;
+}
+
+body {
+    background: #F3F2E2 url(../img/paper.png);
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.paper-bg {
+    background: #F3F2E2 url(../img/paper.png);
+}
+
+.main-title {
+    margin-top: 1rem;
+    font-family: cursive;
+}
+
+.text-indent {
+    text-indent: 2rem;
+}
+
+.s60 {
+    width: 60px;
+    height: 60px;
+}
+
+.s50 {
+    width: 50px;
+    height: 50px;
+}
+
+.s36 {
+    width: 36px;
+    height: 36px;
+}
+
+.s1r {
+    width: 1.6rem;
+    height: 1rem;
+}
+
+.s3r {
+    height: 3rem;
+}
+
+.m6p {
+    margin: 6px;
+}
+
+.s50f {
+    height: 50px;
+    line-height: 50px;
+    overflow: hidden;
+}
+
+.text-flow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 98%;
+}
+
+.w-fc {
+    width: fit-content;
+    width: -moz-fit-content;
+}
+
+.word-break-all {
+    word-break: break-all;
+}
+
+.pair-btn-reset {
+    top: 1rem;
+    align-items: unset;
+}
+
+.icon-left {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-position: 50%;
+    background-size: 100% 100%;
+    background-image: url("../img/icons/arrow-left-circle-fill.svg");
+}
+
+.icon-right {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-position: 50%;
+    background-size: 100% 100%;
+    background-image: url("../img/icons/arrow-right-circle.svg");
+}
+
+.alert-tips {
+    z-index: 1080;
+}
+
+.logout-btn {
+    top: 0;
+    right: 1.5rem;
+}
+
+.chat-right {
+    top: 0;
+    right: 0;
+}
+
+.chat-send-btn {
+    background: url("../img/maoz.jpg") no-repeat;
+    background-size: 100% 100%;
+}
+
+.msg-btn {
+    top: -1rem;
+    right: 1rem;
+}

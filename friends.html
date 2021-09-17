@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="public/css/index.css" rel="stylesheet">
+    <title>Acger Pair</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-12 p-0">
+            <a href="/">
+                <img class="img-fluid rounded mx-auto d-block" src="public/img/header.jpg">
+            </a>
+        </div>
+    </div>
+    <div class="row mt-3 justify-content-center">
+        <div class="col-12 col-lg-6">
+            <div id="friList">
+                <fri-li :list="user"></fri-li>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen">
+            <div class="modal-content" id="chatList">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="chatModalLabel">Are you OK ?</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body paper-bg" id="chatMessageList">
+                    <div class="row">
+                        <div class="col-12">
+                            <template v-if="status">
+                                <chat-li :list="list" :from="fromUser" :to="toUser"></chat-li>
+                            </template>
+                            <div class="row s3r"></div>
+                        </div>
+                    </div>
+                    <div class="row fixed-bottom">
+                        <div class="col-12">
+                            <div class="input-group p-2 bg-light">
+                                <input id="chatMessage" type="text" class="form-control">
+                                <button id="chatSendBtn" class="btn btn-outline-secondary chat-send-btn" type="button">
+                                    <p class="s1r"></p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="public/js/bootstrap.bundle.min.js"></script>
+<script src="public/js/jquery-3.6.0.min.js"></script>
+<script src="public/js/vue.global.prod.js"></script>
+<script type="module" src="public/js/friends.js"></script>
+<script type="module" src="public/js/chat.js"></script>
+</body>
+</html>
