@@ -21,7 +21,7 @@ const FriendsLi = {
                         <div class="s50 border rounded-circle justify-content-center"
                         :class="statusColor(item.status)"
                         data-bs-toggle="modal" :data-bs-to="detailString(item)" data-bs-target="#chatModal">
-                            <img class="s36 m6p" src="/public/img/icons/envelope.svg" />
+                            <img class="s36 m6p" src="/dist/publicublic/img/icons/envelope.svg" />
                         </div>
                     </div>
                 </div>

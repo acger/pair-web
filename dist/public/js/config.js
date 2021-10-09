@@ -1,9 +1,10 @@
 //根域名
+const ROOT_DOMAIN = "acger-pair.com"
 export const Protocol = "http://"
 export const WsProtocol = "ws://"
-export const userApiHost = Protocol + "user-api.ll.com"
-export const pairApiHost = Protocol + "pair-api.ll.com"
-export const chatApiHost = "chat-api.ll.com"
+export const userApiHost = Protocol + "api-user." + ROOT_DOMAIN
+export const pairApiHost = Protocol + "api-pair." + ROOT_DOMAIN
+export const chatApiHost = "api-chat." + ROOT_DOMAIN
 export const imgHost = Protocol + "img-ffl-test.nocilol.com"
 
 //七牛

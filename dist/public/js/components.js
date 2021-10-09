@@ -154,7 +154,7 @@ const UserElementDetail = {
                     <div class="col-3">
                         <div class="s50 border border-danger rounded-circle justify-content-center"
                         data-bs-toggle="modal" :data-bs-to="detailJson" data-bs-target="#chatModal">
-                            <img class="s36 m6p" src="/public/img/icons/envelope.svg" />
+                            <img class="s36 m6p" src="/dist/publicublic/img/icons/envelope.svg" />
                         </div>
                     </div>
                 </div>
