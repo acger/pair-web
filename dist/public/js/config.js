@@ -1,6 +1,6 @@
 //根域名
 const ROOT_DOMAIN = "acger-pair.com"
-export const Protocol = "http://"
+export const Protocol = "https://"
 export const WsProtocol = "ws://"
 export const userApiHost = Protocol + "api-user." + ROOT_DOMAIN
 export const pairApiHost = Protocol + "api-pair." + ROOT_DOMAIN
