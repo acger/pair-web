@@ -33,6 +33,8 @@ jobs:
         scp: |
           ./pair-web-cd.yaml => "~/deploy/"
         last_ssh: |
+          kubectl delete deploy pair-web
+          kubectl delete svc pair-web
           kubectl apply -f ~/deploy/pair-web-cd.yaml
     
       
