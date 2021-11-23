@@ -1,11 +1,11 @@
 //根域名
-const ROOT_DOMAIN = "u20.com"
-export const Protocol = "http://"
-export const WsProtocol = "ws://"
+const ROOT_DOMAIN = "acger-pair.com"
+export const Protocol = "https://"
+export const WsProtocol = "wss://"
 export const userApiHost = Protocol + "api-user." + ROOT_DOMAIN
 export const pairApiHost = Protocol + "api-pair." + ROOT_DOMAIN
 export const chatApiHost = "api-chat." + ROOT_DOMAIN
-export const imgHost = Protocol + "img-ffl-test.nocilol.com"
+export const imgHost = Protocol + "img-ffl.nocilol.com"
 
 //七牛
 export const qiniuUpTokenUrl = userApiHost + "/qiniu/up/token"
