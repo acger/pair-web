@@ -291,6 +291,7 @@ const chatLi = {
     props: ['list', 'from', 'to'],
     template: `
         <template v-for="item in list">
+        <template v-if="item.message.length > 0">
         <template v-if="item.uid == to.id">
          <div class="row mb-3 justify-content-center">
             <div class="col-11 p-2">
@@ -326,6 +327,7 @@ const chatLi = {
                 </div>
             </div>
         </div>
+        </template>
         </template>
         </template>
     `,

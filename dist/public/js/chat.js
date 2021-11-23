@@ -111,11 +111,13 @@ $(document).ready(function (){
 
         let dataJson = JSON.stringify(data)
 
+        /*
         $.post(chatMessageSaveUrl, dataJson, function (result, state) {
             if (!checkRspResult(result, state)) {
                 return
             }
         })
+        */
 
         conn.send(dataJson);
         $("#chatMessage").val("")
