@@ -21,6 +21,22 @@
             <div id="friList">
                 <fri-li :list="user"></fri-li>
             </div>
+            <!-- Modal -->
+            <div class="modal fade" id="elementModal" tabindex="-1" aria-labelledby="elementModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-lg-down">
+                    <div class="modal-content border-5">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="elementModalLabel">Detail</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body paper-bg" id="userElementDetail">
+                            <user-element-detail :detail="userElement"></user-element-detail>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -57,6 +73,7 @@
         </div>
     </div>
 </div>
+
 <script src="public/js/bootstrap.bundle.min.js"></script>
 <script src="public/js/jquery-3.6.0.min.js"></script>
 <script src="public/js/vue.global.prod.js"></script>

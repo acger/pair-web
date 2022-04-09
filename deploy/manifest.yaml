@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pair-web
-  namespace: default
+  namespace: acger
   labels:
     app: pair-web
 spec:
@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: pair-web
-        image: docker.io/dk251626910/ffl-pair-web-dev:latest
+        image: docker.io/dk251626910/ffl-pair-web:latest
         lifecycle:
           preStop:
             exec:
@@ -38,9 +38,31 @@ apiVersion: v1
 kind: Service
 metadata:
   name: pair-web
-  namespace: default
+  namespace: acger
 spec:
   ports:
     - port: 80
   selector:
     app: pair-web
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pair-web
+  namespace: acger
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: acger-pair.com
+      http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: pair-web
+                port:
+                  number: 80
+---

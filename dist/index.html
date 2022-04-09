@@ -18,7 +18,7 @@
                 <blockquote class="blockquote">
                     <p class="display-3 main-title" style="">Acger Pair</p>
                 </blockquote>
-                <p class="text-muted fs-6">—— 发现你的宝藏小伙伴 ——</p>
+                <p class="text-muted fs-6">—— 招募伙伴，开启你的现世冒险 ——</p>
             </figure>
         </div>
         <div id="userInfoBlock" class="col-12 col-lg-6 mb-3 text-center d-none position-relative">
@@ -80,14 +80,21 @@
         </div>
     </div>
 
-    <div class="row fixed-bottom">
+    <div class="row fixed-bottom" id="index-bottom">
         <div class="col-12 text-center">
-            <p class="text-black-50 text-opacity-25 fw-lighter"><small>&copy; 2021 Power by grail.</small></p>
+            <p class="text-black-50 text-opacity-25 fw-lighter"><small>&copy; 2021 -
+                <span>
+                    <script>let date = new Date;
+                    document.write(date.getFullYear());
+                    </script>
+                </span> Power by grail.</small>
+            </p>
         </div>
     </div>
 </div>
 <script src="public/js/bootstrap.bundle.min.js"></script>
 <script src="public/js/jquery-3.6.0.min.js"></script>
+<script src="public/js/axios.min.js"></script>
 <script type="module" src="public/js/login.js"></script>
 </body>
 </html>

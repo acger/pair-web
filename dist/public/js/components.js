@@ -1,68 +1,64 @@
 import "./global.js"
-import {checkRspResult, alertTop, getImgPath} from "./tool.js"
+import {checkRspResult, alertTop, getImgPath, getScrollHeight, getScrollTop, getWindowHeight, pair} from "./tool.js"
+import {elementListUrl} from "./config.js"
 
-let pastList = []
-let presentList = []
-let futureList = []
+let skillList = []
+let skillNeedList = []
 
-const EleInputLi = {
+const SkillInputLi = {
     props: ['list'],
     template: `
         <li v-for="item,i in list" class="list-group-item">
-            <input :value="item.name"
-                @change="this.$parent.setItemValue(i, item.mode, $event)"
-                @click="this.$parent.addEmptyItem(item.mode)"
+            <input :value="item"
+                @change="this.$parent.setItemValue(i, 'skill', $event)"
+                @click="this.$parent.addEmptyItem('skill')"
                 class="form-control">
         </li>`
 }
 
+const SkillNeedInputLi = {
+    props: ['list'],
+    template: `
+        <li v-for="item,i in list" class="list-group-item">
+            <input :value="item"
+                @change="this.$parent.setItemValue(i, 'need', $event)"
+                @click="this.$parent.addEmptyItem('need')"
+                class="form-control">
+        </li>`
+}
+
+
 const ElementPair = {
     data() {
         return {
-            pastList: pastList,
-            presentList: presentList,
-            futureList: futureList,
+            skillList: skillList,
+            skillNeedList: skillNeedList,
         }
     },
     methods: {
-        getListByMode(mode) {
-            let list = []
-            switch (mode) {
-                case "past":
-                    list = this.pastList;
-                    break;
-
-                case "present":
-                    list = this.presentList;
-                    break;
-
-                case "future":
-                    list = this.futureList;
-                    break;
-            }
-
-            return list
+        getList(type) {
+            return type == "skill" ? this.skillList : this.skillNeedList
         },
-        setItemValue(i, mode, e) {
-            let list = this.getListByMode(mode)
-            list[i] = {name: e.target.value, mode: mode}
+        setItemValue(i, t, e) {
+            this.getList(t)[i] = e.target.value
         },
-        addEmptyItem(mode) {
+        addEmptyItem(t) {
             let emptyNum = 0
-            let list = this.getListByMode(mode)
+            let list = this.getList(t)
             list.forEach(function (item) {
-                if (item.name == "") {
+                if (item == "") {
                     emptyNum++
                 }
             })
 
-            if (emptyNum < 3) {
-                list.push({name: "", mode: mode})
+            if (emptyNum < 5) {
+                this.getList(t).push("")
             }
         }
     },
     components: {
-        'element-input-li': EleInputLi,
+        'skill-input-li': SkillInputLi,
+        'need-input-li': SkillNeedInputLi,
     }
 }
 
@@ -89,12 +85,41 @@ const FriendsLi = {
                             <b class="s50f">NO.{{i+1}}</b>
                         </div>
                     </div>
+                    <div class="mt-3 col-12">
+                        <template v-if="item.element.highlight_skill != '' || item.element.highlight_skill_need != ''">
+                            <div class="pair-skill-preview" v-html:="pairSkill(item.element.highlight_skill, item.element.highlight_skill_need, true)"></div>
+                        </template>
+                        <template v-else>
+                            <div class="pair-skill-preview" v-html:="pairSkill(item.element.skill, item.element.skill_need, false)"></div>
+                        </template>
+                    </div>
                 </div>
             </div>
         </div>
         </template>
         <template v-else>
-            <p>啊咧咧，没有匹配到任何小伙伴</p>
+        <div class="text-center">
+            <div class="row mt-5">
+                <p><b>啊咧咧，没有匹配到任何小伙伴</b></p>
+                <p>O x O</p>
+                <p class="small mt-5">你可以尝试</p>
+            </div>
+            <div class="row mt-1">
+                <div class="col-12">
+                    <button @click="copySiteUrl()" class="btn btn-primary">分享AcgerPair</button>
+                </div>
+            </div>    
+           <div class="row mt-4">
+                <div class="col-12">
+                    <p class="small">— 或 —</p>
+                </div>        
+            </div>            
+            <div class="row mt-2 mb-5">
+                <div class="col-12">
+                    <button @click="this.$parent.viewAllUserElement()" class="btn btn-warning">查看活跃用户</button>
+                </div>        
+            </div>
+        </div>    
         </template>
     `,
     methods: {
@@ -103,6 +128,35 @@ const FriendsLi = {
         },
         detailString(detail) {
             return JSON.stringify(detail)
+        },
+        copySiteUrl() {
+            let copy = (e) => {
+                e.preventDefault()
+                e.clipboardData.setData('text/plain', "https://acger-pair.com")
+                document.removeEventListener('copy', copy)
+            }
+            document.addEventListener('copy', copy)
+            document.execCommand("Copy");
+            alertTop("已复制https://acger-pair.com到粘贴板", "success")
+        },
+        pairSkill(skill, skill_need, isHighlight) {
+            let all = skill + " " + skill_need
+
+            if (isHighlight == false){
+                return all
+            }
+
+            let arr = all.match(/<b>(.*?)<\/b>/g);
+
+            if (!arr) {
+                return ""
+            }
+
+            let filter = arr.filter(function (item, index, arr) {
+                return arr.indexOf(item, 0) === index
+            })
+
+            return filter.join(" ")
         }
     },
 }
@@ -111,6 +165,33 @@ const FriendsListConfig = {
     data() {
         return {
             userElement: [],
+            scrollBottom: false,
+            page: 1,
+            pageSize: 30
+        }
+    },
+    mounted() {
+        document.querySelector("#friendsBody").addEventListener('scroll', this.handleScroll)
+    },
+    destroyed() {
+        document.querySelector("#friendsBody").removeEventListener('scroll', this.handleScroll, false);
+    },
+    methods: {
+        handleScroll() {
+            let flBody = document.querySelector("#friendsBody")
+            let scrollHeight = getScrollHeight(flBody)
+            let windowHeight = getWindowHeight(flBody)
+            let scrollTop = getScrollTop(flBody)
+
+            if (this.scrollBottom == false && windowHeight + scrollTop >= scrollHeight - 50) {
+                this.scrollBottom = true
+                pair(this.page, this.pageSize, this)
+            }
+        },
+        viewAllUserElement() {
+            this.page = 0
+            pair(0, 30, this, elementListUrl)
+            document.querySelector("#pairModalLabel").innerHTML = "查看活跃用户"
         }
     },
     components: {
@@ -160,47 +241,46 @@ const UserElementDetail = {
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row h500">
             <div class="col-12">
                 <div class="row justify-content-center">
                     <div class="col-12">
-                        <div id="eleDetailControls" class="carousel carousel-dark slide"
-                             data-bs-interval="false"
-                             data-bs-ride="carousel">
-                            <div class="carousel-inner m-auto text-center">
-                                <div class="carousel-item active">
-                                    <ul class="list-group">
-                                        <li class="list-group-item">
-                                            <p class="pt-2">曾经的 · Past</p>
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+                                    <ul class="nav nav-tabs col-12 m-auto text-center"  role="tablist">
+                                        <li class="nav-item col-6" role="presentation">
+                                            <button id="skillTabBtn" class="col-12 nav-link active" data-bs-toggle="tab" data-bs-target="#skill2"
+                                                    type="button" role="tab" aria-controls="skill" aria-selected="true">拥有的技能
+                                            </button>
                                         </li>
-                                        <ele-detail-li :list="pastList"></ele-detail-li>
-                                    </ul>
-                                </div>
-                                <div class="carousel-item">
-                                    <ul class="list-group">
-                                        <li class="list-group-item">
-                                            <p class="pt-2">现在的 · Present</p>
+                                        <li class="nav-item col-6" role="presentation">
+                                            <button class="col-12 nav-link" data-bs-toggle="tab" data-bs-target="#skill-need2"
+                                                    type="button" role="tab" aria-controls="skill-need" aria-selected="false">寻找的技能
+                                            </button>
                                         </li>
-                                        <ele-detail-li :list="presentList"></ele-detail-li>
                                     </ul>
-                                </div>
-                                <div class="carousel-item">
-                                    <ul class="list-group">
-                                        <li class="list-group-item">
-                                            <p class="pt-2">未来的 · Future</p>
-                                        </li>
-                                        <ele-detail-li :list="futureList"></ele-detail-li>
-                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade show active" id="skill2" role="tabpanel" aria-labelledby="skill-tab">
+                                            <ul class="list-group">
+                                                    <li v-for="item,i in skillList" class="list-group-item">
+                                                        <span v-html="item"></span>
+                                                    </li>
+                                                <li class="list-group-item">
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="tab-pane fade" id="skill-need2" role="tabpanel" aria-labelledby="skill-need-tab">
+                                            <ul class="list-group">
+                                                    <li v-for="item,i in skillNeedList" class="list-group-item">
+                                                        <span v-html="item"></span>
+                                                    </li>
+                                                <li class="list-group-item">
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <button class="carousel-control-next pair-btn-reset"
-                                    type="button"
-                                    data-bs-target="#eleDetailControls"
-                                    data-bs-slide="next">
-                                <span class="icon-right" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -226,43 +306,28 @@ const UserElementDetail = {
 
             return JSON.stringify(user)
         },
-        pastList() {
+        skillList() {
             let list = []
 
             if (this.detail && this.detail.element) {
-                this.detail.element.forEach(function (item) {
-                    if (item.mode == "past") {
-                        list.push(item)
-                    }
-                })
+                if (this.detail.element.highlight_skill) {
+                    list = this.detail.element.highlight_skill.split(" ")
+                } else if (this.detail.element.skill != "") {
+                    list = this.detail.element.skill.split(" ")
+                }
             }
 
             return list
         },
-
-        presentList() {
+        skillNeedList() {
             let list = []
 
             if (this.detail && this.detail.element) {
-                this.detail.element.forEach(function (item) {
-                    if (item.mode == "present") {
-                        list.push(item)
-                    }
-                })
-            }
-
-            return list
-        },
-
-        futureList() {
-            let list = []
-
-            if (this.detail && this.detail.element) {
-                this.detail.element.forEach(function (item) {
-                    if (item.mode == "future") {
-                        list.push(item)
-                    }
-                })
+                if (this.detail.element.highlight_skill_need) {
+                    list = this.detail.element.highlight_skill_need.split(" ")
+                } else if (this.detail.element.skill != "") {
+                    list = this.detail.element.skill_need.split(" ")
+                }
             }
 
             return list
@@ -270,6 +335,8 @@ const UserElementDetail = {
     },
     components: {
         'ele-detail-li': UserEleLi,
+        'skill-input-li': SkillInputLi,
+        'need-input-li': SkillNeedInputLi,
     }
 }
 
@@ -293,10 +360,10 @@ const chatLi = {
         <template v-for="item in list">
         <template v-if="item.message.length > 0">
         <template v-if="item.uid == to.id">
-         <div class="row mb-3 justify-content-center">
+         <div class="row mb-3 justify-content-center chat-max-with">
             <div class="col-11 p-2">
                 <div class="row align-items-top">
-                    <div class="col-3 text-center">
+                    <div class="col-3 col-lg-1 col-mid-1 text-center">
                         <img class="s60 border border-1 rounded-circle" :src="img(to.avatar)">
                         <p v-if="to.name" class="word-break-all small">{{to.name}}</p>
                         <p v-else class="word-break-all small">{{to.account}}</p>
@@ -318,7 +385,7 @@ const chatLi = {
                             {{item.message}}</p>
                         </div>
                     </div>
-                    <div class="col-3 text-center">
+                    <div class="col-3 col-lg-1 col-mid-1 text-center">
                         <img class="s60 border border-1 rounded-circle"
                              :src="img(from.avatar)">
                         <p v-if="from.name" class="word-break-all small">{{from.name}}</p>

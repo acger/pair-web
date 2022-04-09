@@ -1,5 +1,5 @@
 import "./global.js"
-import {checkRspResult, alertTop, getImgPath} from "./tool.js"
+import {checkRspResult, alertTop, getImgPath, pair} from "./tool.js"
 import {vm, fl, ue, cl} from "./components.js"
 import {
     elementUrl,
@@ -10,10 +10,6 @@ import {
     chatMessageSaveUrl,
     chatHistorySaveUrl,
 } from "./config.js"
-
-let EmptyPastItem = {name: "", mode: "past"}
-let EmptyPresentItem = {name: "", mode: "present"}
-let EmptyFutureItem = {name: "", mode: "future"}
 
 $(document).ready(function () {
     getUserElement()
@@ -36,56 +32,21 @@ $(document).ready(function () {
      * @param list 元素原始列表
      */
     function exportElement(list) {
-        list.forEach(function (item) {
-            switch (item.mode) {
-                case "past":
-                    vm.pastList.push(item)
-                    break;
-                case "present":
-                    vm.presentList.push(item)
-                    break;
-                case "future":
-                    vm.futureList.push(item)
-                    break;
-            }
-        })
+        if (!list.skill) {
+            list.skill = ""
+        }
+
+        if (!list.skill_need) {
+            list.skill_need = ""
+        }
+
+        vm.skillList = list.skill.split(" ")
+        vm.skillNeedList = list.skill_need.split(" ")
 
         for (let i = 0; i < 5; i++) {
-            vm.pastList.push(EmptyPastItem)
-            vm.presentList.push(EmptyPresentItem)
-            vm.futureList.push(EmptyFutureItem)
+            vm.skillList.push("")
+            vm.skillNeedList.push("")
         }
-    }
-
-    /**
-     * 合并元素
-     * @returns {*[]}
-     */
-    function megreListData() {
-        let data = []
-
-        vm.pastList.forEach(function (item) {
-            if (item.name == "") {
-                return
-            }
-            data.push(item)
-        })
-
-        vm.presentList.forEach(function (item) {
-            if (item.name == "") {
-                return
-            }
-            data.push(item)
-        })
-
-        vm.futureList.forEach(function (item) {
-            if (item.name == "") {
-                return
-            }
-            data.push(item)
-        })
-
-        return data
     }
 
     /**
@@ -104,22 +65,60 @@ $(document).ready(function () {
         return a + "-" + b
     }
 
+    /**
+     * 合并数据
+     * @returns {{element: {skill: *[], skill_need: *[]}}}
+     */
+    function mergeData() {
+        let skillArr = []
+        let needArr = []
+        let data = {skill: [], skill_need: []}
+
+        vm.skillList.forEach(function (item) {
+            if (item) {
+                skillArr.push(item)
+            }
+        })
+
+        vm.skillNeedList.forEach(function (item) {
+            if (item) {
+                needArr.push(item)
+            }
+        })
+
+        data.skill = skillArr.join(" ")
+        data.skill_need = needArr.join(" ")
+
+        return {"element": data}
+    }
+
     //Pair按钮监听
     $("#pairBtn").on("click", function (e) {
-        let listData = megreListData()
-        let data = {element: listData}
+        $("#pairModalLabel").html("匹配到的小伙伴")
+
+        let data = mergeData()
 
         $.post(elementSaveUrl, JSON.stringify(data), function (result, state) {
             if (!checkRspResult(result, state)) {
                 return
             }
 
-            $.get(elementPairUrl, function (response, state) {
-                if (!checkRspResult(response, state)) {
-                    return
-                }
+            $.ajax({
+                url: elementPairUrl,
+                dataType: "json",
+                type: "GET",
+                success: function (response) {
+                    if (!checkRspResult(response, state)) {
+                        return
+                    }
 
-                fl.userElement = response.userElement
+                    fl.userElement = response.userElement
+                },
+                error: function (response, state) {
+                    if (!checkRspResult(response, state)) {
+                        return
+                    }
+                }
             })
         })
     })
@@ -128,7 +127,10 @@ $(document).ready(function () {
         let target = e.relatedTarget
         let data = target.getAttribute('data-bs-ele')
         let eleDetail = JSON.parse(data)
+
         ue.userElement = eleDetail
+
+        $("#skillTabBtn").click()
     })
 })
 

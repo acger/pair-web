@@ -121,3 +121,19 @@ body {
     top: -1rem;
     right: 1rem;
 }
+
+.pair-skill-preview {
+    height: 2.1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-top: 1px #a6d9ea solid;
+    padding-top: 0.6rem;
+}
+
+.pair-skill-preview b {
+    font-weight: lighter;
+}
+
+.h500{
+    height: 500px;
+}

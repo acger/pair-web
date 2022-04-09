@@ -83,7 +83,7 @@ $(document).ready(function () {
     })
 
     //登录按钮
-    $("#loginBtn").click(function () {
+    $("#loginBtn").on("click", function () {
         let account = $("#loginAccount").val()
         let pwd = $("#loginPassword").val()
 
@@ -97,15 +97,24 @@ $(document).ready(function () {
             password: pwd,
         }
 
-        $.post(userLoginUrl, JSON.stringify(data), function (result, state) {
-            if (!checkRspResult(result, state)) {
-                return
+        $.ajax({
+            url: userLoginUrl,
+            data: JSON.stringify(data),
+            type: "POST",
+            success: function (result, state) {
+                if (!checkRspResult(result, state)) {
+                    return
+                }
+
+                window.localStorage.setItem("token", result.token)
+                window.localStorage.setItem("user", JSON.stringify(result.user))
+                let user = window.localStorage.getItem("user")
+
+                location.href = "/element.html"
+            },
+            error: function (result, state) {
+                alertTop("系统错误")
             }
-
-            window.localStorage.setItem("token", result.token)
-            window.localStorage.setItem("user", JSON.stringify(result.user))
-
-            location.href = "/element.html"
         })
     });
 

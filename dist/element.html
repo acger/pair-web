@@ -18,57 +18,49 @@
     </div>
     <div class="row justify-content-center">
         <div class="mt-3 col-lg-5 col-sm-10">
-            <p class="text-indent text-muted bg-light p-2 rounded border border-light"><b class="text-danger">* </b>请写下那些印象深刻的作品，例如某部动画、游戏、电影、书籍、UP主等等，Acger
-                Pair将为你匹配出有相同味道的小伙伴。</p>
+            <p class="text-center text-muted bg-light p-2 rounded border border-light">
+                <b class="text-danger">* </b>请写下你拥有的技能以及希望队友拥有的技能<br>
+                AcgerPair将为你搜寻志同道合的小伙伴
+            </p>
         </div>
     </div>
 
     <div class="row justify-content-center">
         <div class="col-lg-6 col-sm-12" id="elementForm">
-            <div id="eleControls" class="carousel carousel-dark slide" data-bs-interval="false"
-                 data-bs-ride="carousel">
-                <div class="carousel-inner m-auto text-center">
-                    <div class="carousel-item active">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <p class="pt-2">曾经的 · Past</p>
-                                <p class="text-muted small">记忆化作了血肉，成为了你</p>
-                            </li>
-                            <element-input-li :list="pastList"></element-input-li>
-                            <li class="list-group-item">
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="carousel-item">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <p class="pt-2">现在的 · Present</p>
-                                <p class="text-muted small">每一个当下，都值得纪念</p>
-                            </li>
-                            <element-input-li :list="presentList"></element-input-li>
-                            <li class="list-group-item">
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="carousel-item">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <p class="pt-2">未来的 · Future</p>
-                                <p class="text-muted small">不妨写下那些心心念念的</p>
-                                <p class="text-muted small fw-lighter">或许能认识，来自未来的你</p>
-                            </li>
-                            <element-input-li :list="futureList"></element-input-li>
-                            <li class="list-group-item">
-                            </li>
-                        </ul>
-                    </div>
+            <ul class="nav nav-tabs col-12 m-auto text-center" id="skillTab" role="tablist">
+                <li class="nav-item col-6" role="presentation">
+                    <button class="col-12 nav-link active" id="skill-tab" data-bs-toggle="tab" data-bs-target="#skill"
+                            type="button" role="tab" aria-controls="skill" aria-selected="true">你拥有的技能
+                    </button>
+                </li>
+                <li class="nav-item col-6" role="presentation">
+                    <button class="col-12 nav-link" id="skill-need-tab" data-bs-toggle="tab"
+                            data-bs-target="#skill-need"
+                            type="button" role="tab" aria-controls="skill-need" aria-selected="false">队友的技能
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="skill" role="tabpanel" aria-labelledby="skill-tab">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <p class="text-muted small">例如：虎背熊腰饭量大、皮糙肉厚善砍价</p>
+                        </li>
+                        <skill-input-li :list="skillList"></skill-input-li>
+                        <li class="list-group-item">
+                        </li>
+                    </ul>
                 </div>
-                <button class="carousel-control-next pair-btn-reset" type="button"
-                        data-bs-target="#eleControls"
-                        data-bs-slide="next">
-                    <span class="icon-right" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+                <div class="tab-pane fade" id="skill-need" role="tabpanel" aria-labelledby="skill-need-tab">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <p class="text-muted small">例如：琴、棋、书、画、唱、跳、rap、躺尸</p>
+                        </li>
+                        <need-input-li :list="skillNeedList"></need-input-li>
+                        <li class="list-group-item">
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -89,7 +81,7 @@
                     <h6 class="modal-title" id="pairModalLabel">匹配到的小伙伴</h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body paper-bg">
+                <div class="modal-body paper-bg" id="friendsBody">
                     <div id="friendsList">
                         <friends-li :list="userElement"></friends-li>
                     </div>
@@ -97,7 +89,7 @@
                     <div class="modal fade" id="elementModal" tabindex="-1" aria-labelledby="elementModalLabel"
                          aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-lg-down">
-                            <div class="modal-content">
+                            <div class="modal-content border-5">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="elementModalLabel">Detail</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"

@@ -1,5 +1,5 @@
 import "./global.js"
-import {chatHistoryUrl} from "./config.js"
+import {chatHistoryUrl, elementUrl} from "./config.js"
 import {alertTop, checkRspResult, getImgPath} from "./tool.js"
 import {vm, fl, ue, cl} from "./components.js"
 
@@ -10,7 +10,8 @@ const FriendsLi = {
         <div v-for="item,i in list" class="row mb-3 justify-content-center">
             <div class="col-11 p-2 border rounded bg-light">
                 <div class="row align-items-center">
-                    <div class="col-3">
+                    <div class="col-3" :data-bs-ele="detailString(item)" data-bs-toggle="modal"
+                     data-bs-target="#elementModal">
                         <img class="s60 border border-1 rounded-circle" :src="img(item.avatar)">
                     </div>
                     <div class="col-6">
@@ -74,6 +75,27 @@ $(document).ready(function () {
             fri.user = result.user
         })
     }
+
+    $("#elementModal").on("show.bs.modal", function (e) {
+        let target = e.relatedTarget
+        let data = target.getAttribute('data-bs-ele')
+        let eleDetail = JSON.parse(data)
+
+        $.get(elementUrl + "?uid=" + eleDetail.id, function (res, state) {
+
+            if (!checkRspResult(res, state)) {
+                return
+            }
+
+            eleDetail.element = {}
+            eleDetail.element.skill = res.element.skill
+            eleDetail.element.skill_need = res.element.skill_need
+
+            ue.userElement = eleDetail
+        })
+
+        $("#skillTabBtn").click()
+    })
 });
 
 

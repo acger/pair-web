@@ -1,6 +1,6 @@
 import "./global.js"
 import {userProfileUrl, userProfileEditUrl, qiniuUpTokenUrl} from "./config.js"
-import {alertTop, checkRspResult, getImgPath, getImageSuffix} from "./tool.js"
+import {alertTop, checkRspResult, getImgPath, getImageSuffix, getUUID} from "./tool.js"
 
 const ProfileConfig = {
     data() {
@@ -47,7 +47,7 @@ $(document).ready(function () {
     $("#avatarFile").on("change", function (e) {
         let file = e.currentTarget.files[0]
         let path = URL.createObjectURL(file);
-        let key = "avatar/" + up.id + "." + getImageSuffix(file.type)
+        let key = "avatar/" + getUUID() + "." + getImageSuffix(file.type)
         let data = {name: ""}
 
         const observer = {
@@ -68,7 +68,7 @@ $(document).ready(function () {
                 return
             }
 
-            const observable = qiniu.upload(file, null, result.token)
+            const observable = qiniu.upload(file, key, result.token)
             const subscription = observable.subscribe(observer)
         })
     })

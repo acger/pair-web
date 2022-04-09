@@ -11,7 +11,7 @@ import {
     chatHistorySaveUrl,
 } from "./config.js"
 
-$(document).ready(function (){
+$(document).ready(function () {
     let conn
 
     $("#chatModal").on("show.bs.modal", function (e) {
@@ -21,6 +21,7 @@ $(document).ready(function (){
 
         cl.toUser = JSON.parse(data)
         cl.fromUser = JSON.parse(user)
+
         cl.status = true
 
         let chatData = {
