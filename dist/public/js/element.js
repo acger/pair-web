@@ -23,6 +23,8 @@ $(document).ready(function () {
                 return
             }
 
+            $("#pairBtn").removeAttr("disabled");
+
             exportElement(result.element)
         })
     }
